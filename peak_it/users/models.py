@@ -16,10 +16,10 @@ class CustomUser(AbstractUser):
         ("wind-surfing", "Wind Surfing"), 
         ("camping", "Camping")
     )
-    email = models.EmailField(unique=True, null=True, blank=True)
+    email = models.EmailField(unique=True, null=True, blank=False)
 
-    birthdate = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True, blank=True)
-    interests = MultiSelectField(choices= INTEREST_CHOICES, null=True, blank=True)
+    birthdate = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True, blank=False)
+    interests = MultiSelectField(choices= INTEREST_CHOICES, blank=False)
     #pfp
 
 
