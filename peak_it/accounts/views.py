@@ -1,9 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.contrib.auth.models import update_last_login
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 from datetime import datetime
 from .serializers import RegisterUserSerializer
 from users.models import CustomUser as User
@@ -18,8 +21,7 @@ def register(request):
         print(serializer)
         user = serializer.save()
         token, created = Token.objects.get_or_create(user=user)
-            # user.last_login = datetime.now()
-            # user.save()
+        update_last_login(None, user)
         return Response({"token": token.key}, status=status.HTTP_201_CREATED)
     
     if User.objects.filter(username=request.data.get("username")).exists():

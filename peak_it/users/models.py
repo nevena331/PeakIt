@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
         ("wind-surfing", "Wind Surfing"), 
         ("camping", "Camping")
     )
-    email = models.EmailField(unique=True, null=True, blank=False)
+    email = models.EmailField(unique=True, blank=False, default = "no@email.com")
 
     birthdate = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True, blank=False)
     interests = MultiSelectField(choices= INTEREST_CHOICES, blank=False)
