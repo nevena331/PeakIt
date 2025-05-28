@@ -4,7 +4,7 @@ from .models import Adventure
 class AdventureListSerializer (serializers.ModelSerializer):
     class Meta:
         model = Adventure
-        fields = ['id', 'title', 'creator', 'time_and_day']
+        fields = ['id', 'title', 'creator', 'start_time_and_day', 'end_time_and_day','location']
 
 class AdventureDetailSerializer (serializers.ModelSerializer):
     class Meta:

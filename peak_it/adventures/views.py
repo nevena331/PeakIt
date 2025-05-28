@@ -1,12 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
-from django.http import HttpResponse
 from .models import Adventure
 from .serializers import AdventureListSerializer, AdventureDetailSerializer
 from rest_framework.permissions import IsAuthenticated
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 
 def listAdventures(request):
@@ -26,7 +25,6 @@ def detailAdventure(request, pk):
     
     if request.method == 'GET':
         serializer = AdventureDetailSerializer(adventure)
-        print(serializer.data)
         return Response(serializer.data, status = status.HTTP_200_OK)
     elif request.method == 'PUT':
         serializer = AdventureDetailSerializer(adventure, data = request.data, partial=True)

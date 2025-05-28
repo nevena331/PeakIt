@@ -21,7 +21,8 @@ class Adventure (models.Model):
     description = models.TextField(_("description"), blank = False)
     location = models.TextField(_("location"), blank = False)
     creator = models.ForeignKey("users.CustomUser", verbose_name=_("creator"), on_delete=models.CASCADE)
-    time_and_day = models.DateTimeField(_("time and day"), auto_now=False, auto_now_add=False, null = False)
+    start_time_and_day = models.DateTimeField(_("start time and day"), auto_now=False, auto_now_add=False, null = False)
+    end_time_and_day = models.DateTimeField(_("end time and day"), auto_now=False, auto_now_add=False, null = False)
     interests = MultiSelectField(choices= INTEREST_CHOICES, null=True, blank=True)
 
     def __str__(self):
