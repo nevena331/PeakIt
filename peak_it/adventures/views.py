@@ -53,7 +53,7 @@ def createAdventure(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PATCH'])
 def editAdventure(request, pk):
     try:
         adventure = Adventure.objects.get(pk = pk)
@@ -66,7 +66,7 @@ def editAdventure(request, pk):
     if request.method == 'GET':
         serializer = serializers.AdventureDetailSerializer(adventure)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
+    elif request.method == 'PATCH':
         serializer = serializers.AdventureCreateSerializer(adventure, data = request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

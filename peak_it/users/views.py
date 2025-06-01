@@ -25,7 +25,7 @@ def detailUser(request, pk):
         serializer = serializers.UserDetailSerializer(user)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def editUser(request):
     try:
@@ -36,7 +36,7 @@ def editUser(request):
     if request.method == 'GET':
         serializer = serializers.UserDetailSerializer(user)
         return Response(serializer.data, status = status.HTTP_200_OK)
-    elif request.method == 'PUT':
+    elif request.method == 'PATCH':
         print("RAW REQUEST DATA:", request.data)
         serializer = serializers.UserEditSerializer(user, data = request.data, partial = True)
         if serializer.is_valid():
