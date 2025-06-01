@@ -27,7 +27,7 @@ def listUserAdventures(request, pk):
 
 
 
-@api_view (['GET'])
+@api_view (['GET', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def detailAdventure(request, pk):
     try:
@@ -38,6 +38,13 @@ def detailAdventure(request, pk):
     if request.method == 'GET':
         serializer = serializers.AdventureDetailSerializer(adventure)
         return Response(serializer.data, status = status.HTTP_200_OK)
+    if request.method == 'PATCH':
+        if request.data.get('message') == 'join':
+            adventure.participants.add(request.user)
+            adventure.save()
+            return Response({"message":"joined"}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
