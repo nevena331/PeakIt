@@ -64,7 +64,7 @@ def editAdventure(request, pk):
         serializer = serializers.AdventureDetailSerializer(adventure)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'PUT':
-        serializer = serializers.AdventureEditSerializer(adventure, data = request.data, partial=True)
+        serializer = serializers.AdventureCreateSerializer(adventure, data = request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status = status.HTTP_200_OK)
