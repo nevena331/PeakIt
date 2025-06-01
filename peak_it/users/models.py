@@ -3,6 +3,11 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from multiselectfield import MultiSelectField
 
+from django.contrib.auth.models import AbstractUser
+from multiselectfield import MultiSelectField
+from django.utils.translation import gettext_lazy as _
+from django.db import models
+
 class CustomUser(AbstractUser):
     INTEREST_CHOICES = (
         ("hiking", "Hiking"), 
@@ -16,10 +21,8 @@ class CustomUser(AbstractUser):
         ("wind-surfing", "Wind Surfing"), 
         ("camping", "Camping")
     )
-    email = models.EmailField(unique=True, blank=False, default = "no@email.com")
+    
 
-    birthdate = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True, blank=False)
-    interests = MultiSelectField(choices= INTEREST_CHOICES, blank=False)
-    #pfp
-
-
+    email = models.EmailField(unique=True)
+    birthdate = models.DateField(_("date of birth"), null=True, blank=False)
+    interests = MultiSelectField(choices=INTEREST_CHOICES, blank=False)
