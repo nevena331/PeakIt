@@ -30,7 +30,7 @@ def detailUser(request, pk):
 def editUser(request):
     try:
         user = User.objects.get(username = request.user)
-    except User.DoesNotExist: 
+    except user.DoesNotExist: 
         return Response({"message":"User does not exist"}, status= status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
