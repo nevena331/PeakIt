@@ -23,7 +23,7 @@ def listUserAdventures(request, pk):
     
     adventures = Adventure.objects.filter(creator = pk)
     serializer = serializers.AdventureListSerializer(adventures, many = True)
-    return Response(serializer.data, status.HTTP_200_OK)
+    return Response(serializer.data, status = status.HTTP_200_OK)
 
 
 
@@ -38,6 +38,17 @@ def detailAdventure(request, pk):
     if request.method == 'GET':
         serializer = serializers.AdventureDetailSerializer(adventure)
         return Response(serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createAdventure(request):
+    request.data.update({"creator": request.user.id})
+    serializer = serializers.AdventureCreateSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT'])
 def editAdventure(request, pk):

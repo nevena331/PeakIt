@@ -11,6 +11,12 @@ class AdventureDetailSerializer (serializers.ModelSerializer):
         model = Adventure
         fields = '__all__'
 
+class AdventureCreateSerializer(serializers.ModelSerializer):
+    activities = serializers.MultipleChoiceField(choices=Adventure.ACTIVITY_CHOICES)
+    class Meta:
+        model = Adventure
+        fields = '__all__'
+
 class AdventureEditSerializer (serializers.ModelSerializer):
     activities = serializers.MultipleChoiceField(choices=Adventure.ACTIVITY_CHOICES)
     class Meta:
