@@ -37,5 +37,5 @@ def register(request):
 def logout(request):
     if request.method == 'POST':
         request.user.auth_token.delete()
-        return Response({"ok":"logged out"}, status = status.HTTP_200_OK)
+        return Response({"message":"logged out"}, status = status.HTTP_200_OK)
 

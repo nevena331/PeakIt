@@ -19,7 +19,7 @@ def detailAdventure(request, pk):
     try:
         adventure = Adventure.objects.get(pk = pk)
     except adventure.DoesNotExist:
-        return Response(status= status.HTTP_404_NOT_FOUND)
+        return Response({"message":"Adventure does not exist"}, status= status.HTTP_404_NOT_FOUND)
     
     if request.method == 'GET':
         serializer = serializers.AdventureDetailSerializer(adventure)
@@ -30,7 +30,7 @@ def editAdventure(request, pk):
     try:
         adventure = Adventure.objects.get(pk = pk)
     except adventure.DoesNotExist:
-        return Response({"message":"Adventure not found"}, status= status.HTTP_404_NOT_FOUND)
+        return Response({"message":"Adventure does not exist"}, status= status.HTTP_404_NOT_FOUND)
     
     if request.user != adventure.creator:
         return Response({"message":"forbidden to access the edit page"}, status=status.HTTP_403_FORBIDDEN)
