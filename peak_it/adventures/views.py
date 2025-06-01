@@ -2,15 +2,29 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from .models import Adventure
+from users.models import CustomUser as User
 from . import serializers
 from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def listAdventures(request):
-        adventures = Adventure.objects.all()
-        serializer = serializers.AdventureListSerializer(adventures, many = True)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+    adventures = Adventure.objects.all()
+    serializer = serializers.AdventureListSerializer(adventures, many = True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def listUserAdventures(request, pk):
+    try:
+        user = User.objects.get(pk = pk)
+    except user.DoesNotExist: 
+        return Response({"message":"User does not exist"}, status= status.HTTP_404_NOT_FOUND)
+    
+    adventures = Adventure.objects.filter(creator = pk)
+    serializer = serializers.AdventureListSerializer(adventures, many = True)
+    return Response(serializer.data, status.HTTP_200_OK)
+
 
 
 @api_view (['GET'])
