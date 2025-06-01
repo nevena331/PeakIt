@@ -18,7 +18,6 @@ def none(request):
 def register(request):
     serializer = RegisterUserSerializer(data=request.data)
     if serializer.is_valid():
-        print(serializer)
         user = serializer.save()
         token, created = Token.objects.get_or_create(user=user)
         update_last_login(None, user)
