@@ -23,7 +23,8 @@ class Adventure (models.Model):
     creator = models.ForeignKey("users.CustomUser", verbose_name=_("creator"), on_delete=models.CASCADE)
     start_time_and_day = models.DateTimeField(_("start time and day"), auto_now=False, auto_now_add=False, null = False)
     end_time_and_day = models.DateTimeField(_("end time and day"), auto_now=False, auto_now_add=False, null = False)
-    activities = MultiSelectField(choices= ACTIVITY_CHOICES, null=True, blank=True)
+    activities = MultiSelectField(choices= ACTIVITY_CHOICES, null=False, blank=False)
+    passed = models.BooleanField(_("passed"), blank = False)
 
     def __str__(self):
         return self.title
