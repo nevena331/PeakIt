@@ -43,6 +43,9 @@ def detailAdventure(request, pk):
 @permission_classes([IsAuthenticated])
 def createAdventure(request):
     request.data.update({"creator": request.user.id})
+    if request.user.id not in request.data.get("participants"):
+        request.data.get("participants").append(request.user.id)
+
     serializer = serializers.AdventureCreateSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()

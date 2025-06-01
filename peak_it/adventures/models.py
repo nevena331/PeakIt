@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from multiselectfield import MultiSelectField
+from users.models import CustomUser as User
 
 class Adventure (models.Model):
 
@@ -24,6 +25,7 @@ class Adventure (models.Model):
     start_time_and_day = models.DateTimeField(_("start time and day"), auto_now=False, auto_now_add=False, null = False)
     end_time_and_day = models.DateTimeField(_("end time and day"), auto_now=False, auto_now_add=False, null = False)
     activities = MultiSelectField(choices= ACTIVITY_CHOICES, null=False, blank=False)
+    participants = models.ManyToManyField(User, related_name='adventures_participants', blank=True)
 
     def __str__(self):
         return self.title

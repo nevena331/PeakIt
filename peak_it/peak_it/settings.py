@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users',
     'adventures',
-    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
