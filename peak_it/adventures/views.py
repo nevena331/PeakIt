@@ -87,7 +87,7 @@ def createAdventure(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PATCH'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 def editAdventure(request, pk):
     try:
         adventure = Adventure.objects.get(pk = pk)
@@ -106,3 +106,6 @@ def editAdventure(request, pk):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        adventure.delete()
+        return Response({"message":"adventure deleted"}, status=status.HTTP_200_OK)
