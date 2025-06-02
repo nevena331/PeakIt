@@ -5,13 +5,40 @@ from .models import Adventure
 from users.models import CustomUser as User
 from . import serializers
 from rest_framework.permissions import IsAuthenticated
+from django.utils.dateparse import parse_date
+from django.db.models import Q
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def listAdventures(request):
-    adventures = Adventure.objects.all()
-    serializer = serializers.AdventureListSerializer(adventures, many = True)
-    return Response(serializer.data, status = status.HTTP_200_OK)
+    if request.method == 'GET':
+        query = request.query_params
+        location= query.get("location")
+        string_date = query.get("date")
+        string_keywords = query.get("keywords")
+        my_interests = query.get("my_interests")
+        
+        adventures = Adventure.objects.all()
+        
+        if location:
+            adventures = adventures.filter(location__icontains = location)
+        if string_date:
+            date = parse_date(string_date)
+            adventures = adventures.filter(start_time_and_day__lte = date, 
+                                            end_time_and_day__gte = date)
+        if string_keywords:
+            keywords = string_keywords.split(',')
+            keywords_q = Q()
+            for keyword in keywords:
+                keywords_q |= Q(title__icontains=keyword) | Q(description__icontains=keyword)
+            adventures = adventures.filter(keywords_q)
+        if my_interests:
+            interests_q = Q()
+            for interest in request.user.interests:
+                interests_q |= Q(activities__icontains = interest)
+            adventures = adventures.filter(interests_q)
+        serializer = serializers.AdventureListSerializer(adventures, many = True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
