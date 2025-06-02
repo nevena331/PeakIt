@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.serializers import ValidationError
 
 from datetime import datetime
 from .serializers import RegisterUserSerializer
@@ -16,6 +17,24 @@ def none(request):
 
 @api_view(["POST"])
 def register(request):
+    old_password = request.data.get('old_password')
+    new_password = request.data.get('new_password')
+    confirm_new_password = request.data.get('confirm_new_password')
+    if new_password:
+        if old_password:
+            if confirm_new_password:
+                if new_password != confirm_new_password:
+                    raise ValidationError("password and confirmation password do not match")
+                if not user.check_password(old_password):
+                    raise ValidationError("old password incorrect")
+            else:
+                raise ValidationError("you must enter a confirmation password")
+        else:
+            raise ValidationError("you must enter a confirmation password")
+        del request.data["old_password"]
+        del request.data["confirm_new_password"]
+        del request.data["new_password"]
+    
     serializer = RegisterUserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
