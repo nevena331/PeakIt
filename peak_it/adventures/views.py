@@ -1,12 +1,17 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+
 from .models import Adventure
 from users.models import CustomUser as User
+
 from . import serializers
-from rest_framework.permissions import IsAuthenticated
+
 from django.utils.dateparse import parse_date
+from django.utils import timezone
 from django.db.models import Q
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -18,7 +23,7 @@ def listAdventures(request):
         string_keywords = query.get("keywords")
         my_interests = query.get("my_interests")
         
-        adventures = Adventure.objects.all()
+        adventures = Adventure.objects.filter(start_time_and_day__gte = timezone.now)
         
         if location:
             adventures = adventures.filter(location__icontains = location)
