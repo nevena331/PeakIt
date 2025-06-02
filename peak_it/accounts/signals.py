@@ -5,6 +5,5 @@ from django.contrib.auth.models import update_last_login
 
 
 @receiver(post_save, sender=Token)
-def update_last_login_on_token(sender, instance, **kwargs):
-    print("update last login")
-    update_last_login(None, instance.user)
+def update_last_login_on_token(sender, token, **kwargs):
+    update_last_login(None, token.user)
