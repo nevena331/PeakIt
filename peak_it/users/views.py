@@ -10,7 +10,11 @@ from . import serializers as userserializers
 @api_view(['GET'])
 def listusers(request):
     if request.method == 'GET':
-        users = User.objects.all()
+        query = request.query_params
+        if query.get("username"):
+            users = User.objects.filter(username__icontains = query.get("username"))
+        else:
+            users = User.objects.all()
         serializer = userserializers.UserListSerializer(users, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
