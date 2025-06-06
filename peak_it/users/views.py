@@ -7,12 +7,18 @@ from django.http import HttpResponse
 from .models import CustomUser as User
 from . import serializers as userserializers
 
+from django.db.models import Q
+
 @api_view(['GET'])
 def listusers(request):
     if request.method == 'GET':
         query = request.query_params
-        if query.get("username"):
-            users = User.objects.filter(username__icontains = query.get("username"))
+        if query.get("name"):
+            users_q = Q()
+            users_q |= Q(username__icontains = query.get("name"))
+            users_q |= Q(fname__icontains = query.get("name"))
+            users_q |= Q(lname__icontains = query.get("name"))
+            users = User.objects.filter(users_q)
         else:
             users = User.objects.all()
         serializer = userserializers.UserListSerializer(users, many = True)
