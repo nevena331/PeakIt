@@ -26,6 +26,7 @@ class Adventure (models.Model):
     end_time_and_day = models.DateTimeField(_("end time and day"), auto_now=False, auto_now_add=False, null = False)
     activities = MultiSelectField(choices= ACTIVITY_CHOICES, null=False, blank=False)
     participants = models.ManyToManyField(User, related_name='adventures_participants', blank=True)
+    created_on = models.DateTimeField(_("created on"), auto_now = False, auto_now_add= True)
 
     def __str__(self):
         return self.title
