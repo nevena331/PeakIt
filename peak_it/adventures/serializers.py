@@ -4,9 +4,9 @@ from users.models import CustomUser as User
 from django.utils import timezone
 
 class AdventureListSerializer (serializers.ModelSerializer):
-    class Meta:
-        model = Adventure
-        fields = ['id', 'title', 'creator', 'start_time_and_day', 'end_time_and_day','location']
+        class Meta:
+            model = Adventure
+            fields = ['id', 'title', 'creator', 'start_time_and_day', 'end_time_and_day','location']
 
 class AdventureDetailSerializer (serializers.ModelSerializer):
     class Meta:

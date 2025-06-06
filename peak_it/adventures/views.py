@@ -23,7 +23,7 @@ def listAdventures(request):
         string_keywords = query.get("keywords")
         my_interests = query.get("my_interests")
         
-        adventures = Adventure.objects.filter(start_time_and_day__gte = timezone.now)
+        adventures = Adventure.objects.filter(start_time_and_day__gte = timezone.now())
         
         if location:
             adventures = adventures.filter(location__icontains = location)
